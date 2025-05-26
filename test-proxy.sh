@@ -176,7 +176,7 @@ run_tests() {
   echo ""
 
   # Test 1: Container Status
-  print_status "Test 1/7: Container Status"
+  print_status "Test 1/9: Container Status"
   test_count=$((test_count + 1))
   if check_containers; then
     passed_count=$((passed_count + 1))
@@ -186,7 +186,7 @@ run_tests() {
   echo ""
 
   # Test 2: Port Accessibility
-  print_status "Test 2/7: Port Accessibility"
+  print_status "Test 2/9: Port Accessibility"
   test_count=$((test_count + 1))
   if check_ports; then
     passed_count=$((passed_count + 1))
@@ -196,7 +196,7 @@ run_tests() {
   echo ""
 
   # Test 3: HTTP Main Page
-  print_status "Test 3/7: HTTP Main Page"
+  print_status "Test 3/9: HTTP Main Page"
   test_count=$((test_count + 1))
   if test_http "http://localhost:$HTTP_PORT" 200 "HTTP main page"; then
     passed_count=$((passed_count + 1))
@@ -205,7 +205,30 @@ run_tests() {
   fi
   echo ""
 
-  # Test 4: HTTPS Main Page
+  # Test 4: Subdomain Routing (HTTP)
+  print_status "Test 4/9: Subdomain Routing (HTTP)"
+  test_count=$((test_count + 1))
+  if test_http "http://reposlite.localhost:$HTTP_PORT" 502 "Reposlite subdomain (502 expected if service not running)"; then
+    print_success "Subdomain routing is working (service may not be running on localhost:9156)"
+    passed_count=$((passed_count + 1))
+  else
+    # Try to see if we get any response that indicates nginx is processing the request
+    if response=$(curl -s -w "%{http_code}" -H "Host: reposlite.localhost" "http://localhost:$HTTP_PORT" --connect-timeout $TIMEOUT 2>/dev/null); then
+      if [ "$response" = "502" ] || [ "$response" = "503" ] || [ "$response" = "504" ]; then
+        print_success "Subdomain routing is working (backend not available: HTTP $response)"
+        passed_count=$((passed_count + 1))
+      else
+        print_error "Unexpected response for subdomain: HTTP $response"
+        failed_tests+=("Subdomain Routing")
+      fi
+    else
+      print_error "Failed to test subdomain routing"
+      failed_tests+=("Subdomain Routing")
+    fi
+  fi
+  echo ""
+
+  # Test 5: HTTPS Main Page
   print_status "Test 4/7: HTTPS Main Page"
   test_count=$((test_count + 1))
   if test_https "https://localhost:$HTTPS_PORT" 200 "HTTPS main page"; then

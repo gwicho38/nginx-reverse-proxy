@@ -41,6 +41,20 @@ The setup includes a test backend service to verify everything works. Once confi
 └── README.md             # This file
 ```
 
+## 🌐 **Subdomain Routing**
+
+The proxy now supports subdomain-based routing:
+
+- **`localhost:5080`** → Main website  
+- **`reposlite.localhost:5080`** → Routes to localhost:9156
+
+See `subdomain-setup.md` for detailed configuration instructions.
+
+### Quick Subdomain Setup:
+1. Add to `/etc/hosts`: `127.0.0.1 reposlite.localhost`
+2. Start your service on localhost:9156
+3. Test: `curl http://reposlite.localhost:5080`
+
 ## Configuration
 
 ## Configuration
