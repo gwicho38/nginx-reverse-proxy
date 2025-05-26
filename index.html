@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nginx Reverse Proxy Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success {
+            color: #4CAF50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success">✅ Nginx Reverse Proxy Working!</div>
+        
+        <div class="info">
+            <h3>Test URLs:</h3>
+            <p>HTTP: <code>http://localhost:8080</code></p>
+            <p>HTTPS: <code>https://localhost:8443</code></p>
+            <p>Health: <code>http://localhost:8080/health</code></p>
+        </div>
+        
+        <div class="info">
+            <h3>Current Protocol:</h3>
+            <p id="protocol"></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('protocol').textContent = window.location.protocol + '//' + window.location.host;
+    </script>
+</body>
+</html>
