@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-reverse-proxy
+    ports:
+      - "5080:80"   # HTTP on port 5080
+      - "5443:443"  # HTTPS on port 5443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro  # SSL certificates directory
+    restart: unless-stopped
+    depends_on:
+      - test-backend
+    networks:
+      - proxy-network
+
+  # Optional test backend - remove this if you have your own backend
+  test-backend:
+    image: nginx:alpine
+    container_name: test-backend
+    volumes:
+      - ./test-backend.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - proxy-network
+    # Note: This service is not exposed to host, only accessible via proxy
+
+networks:
+  proxy-network:
+    driver: bridge

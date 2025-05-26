@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Reverse Proxy - Test Backend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .status {
+            background: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .port-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .port {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0 10px;
+        }
+        .code {
+            background: #333;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Nginx Reverse Proxy Working!</h1>
+        
+        <div class="status">
+            ✅ Reverse proxy is successfully forwarding requests
+        </div>
+        
+        <div class="port-info">
+            <div class="port">
+                <h3>HTTP</h3>
+                <p>Port: <strong>5080</strong></p>
+                <p>Status: Active</p>
+            </div>
+            <div class="port">
+                <h3>HTTPS</h3>
+                <p>Port: <strong>5443</strong></p>
+                <p>Status: Active</p>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>🔧 Configuration Info</h3>
+            <p><strong>Proxy Host:</strong> nginx-reverse-proxy</p>
+            <p><strong>Backend:</strong> test-backend (nginx:alpine)</p>
+            <p><strong>Network:</strong> proxy-network</p>
+            <p><strong>SSL:</strong> Self-signed certificate</p>
+        </div>
+        
+        <div class="info">
+            <h3>📝 Next Steps</h3>
+            <p>1. Replace the test-backend with your actual application</p>
+            <p>2. Update the upstream configuration in nginx.conf</p>
+            <p>3. Add your SSL certificates for production use</p>
+        </div>
+        
+        <div class="info">
+            <h3>🧪 Test URLs</h3>
+            <div class="code">
+curl http://localhost:5080<br>
+curl -k https://localhost:5443<br>
+curl http://localhost:5080/health<br>
+curl -k https://localhost:5443/health
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>📊 Headers Received</h3>
+            <div class="code" id="headers">
+                <script>
+                    // This would show forwarded headers in a real app
+                    document.getElementById('headers').innerHTML = 
+                        'X-Real-IP: ' + (window.location.hostname || 'localhost') + '<br>' +
+                        'X-Forwarded-For: ' + (window.location.hostname || 'localhost') + '<br>' +
+                        'X-Forwarded-Proto: ' + window.location.protocol.slice(0, -1) + '<br>' +
+                        'Host: ' + window.location.host;
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
